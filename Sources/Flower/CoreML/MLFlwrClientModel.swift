@@ -62,6 +62,9 @@ public class MLParameter {
     /// - Returns: Specification of the machine learning model configuration in the CoreML structure.
     public func parametersToWeights(parameters: Parameters) -> MLModelConfiguration {
         let config = MLModelConfiguration()
+        if config.parameters == nil {
+            config.parameters = [:]
+        }
         
         guard parameters.tensors.count == self.layerWrappers.count else {
             log.info("parameters received is not valid")
@@ -85,7 +88,7 @@ public class MLParameter {
                             continue
                         }
                         let paramKey = MLParameterKey.weights.scoped(to: layerWrappers[index].name)
-                        config.parameters?[paramKey] = weightsMultiArray
+                        config.parameters![paramKey] = weightsMultiArray
                     }
                 }
             }
